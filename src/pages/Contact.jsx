@@ -1,22 +1,177 @@
+import { useState } from 'react';
+import emailjs from '@emailjs/browser';
+import { Mail, Phone, ArrowRight, Send, CheckCircle2 } from 'lucide-react';
+import { InstagramIcon, LinkedInIcon, FacebookIcon } from '../components/SocialIcons';
+import './Contact.css';
+import Reveal from '../components/Reveal';
+
+const serviceOptions = [
+  'Meta Ads',
+  'SEO',
+  'Content Writing',
+  'Video Editing',
+  'Social Media Management',
+  'Social Media Design',
+  'Other',
+];
+
 const Contact = () => {
+  const [form, setForm] = useState({ name: '', email: '', service: serviceOptions[0], message: '' });
+  const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState('');
+
+  const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+  const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+  const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+
+    if (serviceId && templateId && publicKey) {
+      setSending(true);
+      try {
+        await emailjs.send(
+          serviceId,
+          templateId,
+          {
+            from_name: form.name,
+            from_email: form.email,
+            service: form.service,
+            message: form.message,
+          },
+          { publicKey }
+        );
+        setSent(true);
+      } catch (err) {
+        console.error('EmailJS send failed:', err);
+        setError('Something went wrong sending your message. Please email me directly at hydershaikhsahab875@gmail.com.');
+      } finally {
+        setSending(false);
+      }
+    } else {
+      const subject = encodeURIComponent(`Project Inquiry — ${form.service} (${form.name})`);
+      const body = encodeURIComponent(`Name: ${form.name}\nEmail: ${form.email}\nService Needed: ${form.service}\n\nProject Details:\n${form.message}`);
+      window.location.href = `mailto:hydershaikhsahab875@gmail.com?subject=${subject}&body=${body}`;
+      setSent(true);
+    }
+  };
+
   return (
-    <div className="section container">
-      <span className="section-tag">LET'S CONNECT</span>
-      <h1 className="section-title">Contact Me</h1>
-      <div className="card" style={{ maxWidth: '600px', margin: '0 auto' }}>
-        <p className="text-muted" style={{ marginBottom: '20px' }}>
-          Fill out the form below or reach out directly:<br />
-          <strong>Email:</strong> aishtiaque875@gmail.com <br />
-          <strong>Phone:</strong> +92 32 66739989
-        </p>
-        <form style={{ display: 'flex', flexDirection: 'column', gap: '16px' }} onSubmit={(e) => e.preventDefault()}>
-          <input type="text" placeholder="Your Name" style={{ padding: '12px', borderRadius: '8px', border: '1px solid var(--border-subtle)', backgroundColor: '#222', color: 'white' }} />
-          <input type="email" placeholder="Your Email" style={{ padding: '12px', borderRadius: '8px', border: '1px solid var(--border-subtle)', backgroundColor: '#222', color: 'white' }} />
-          <textarea placeholder="How can I help you?" rows="4" style={{ padding: '12px', borderRadius: '8px', border: '1px solid var(--border-subtle)', backgroundColor: '#222', color: 'white' }}></textarea>
-          <button className="btn btn-primary" type="submit">Send Message</button>
-        </form>
+    <div className="section contact-section">
+      <div className="container">
+        <Reveal>
+          <div className="page-hero">
+            <span className="section-tag">CONTACT</span>
+            <h1 className="page-title">Let's Build Something That Grows.</h1>
+            <p className="text-muted">
+              Have a project, campaign, or business goal in mind? Let's discuss how digital marketing can help you move forward.
+            </p>
+          </div>
+        </Reveal>
+
+        <div className="contact-grid">
+          {/* Left: info */}
+          <Reveal>
+            <div>
+              <h2 className="contact-info-title">Get In<br /><span className="text-accent">Touch</span></h2>
+              <p className="contact-info-desc">
+                Whether it's a Meta Ads campaign, an SEO project, content, video, or design — tell me about it and I'll get back to you quickly.
+              </p>
+
+              <div className="contact-item">
+                <div className="contact-item-icon"><Mail size={20} /></div>
+                <div>
+                  <div className="contact-item-label">Email</div>
+                  <a href="mailto:hydershaikhsahab875@gmail.com">hydershaikhsahab875@gmail.com</a>
+                </div>
+              </div>
+
+              <div className="contact-item">
+                <div className="contact-item-icon"><Phone size={20} /></div>
+                <div>
+                  <div className="contact-item-label">Phone</div>
+                  <a href="tel:+923266739989">+92 32 66739989</a>
+                </div>
+              </div>
+
+              <div className="contact-item">
+                <div className="contact-item-icon"><Send size={20} /></div>
+                <div>
+                  <div className="contact-item-label">Social</div>
+                  <div className="contact-socials" style={{ marginTop: '0' }}>
+                    <a className="contact-social" href="https://www.linkedin.com/in/hydershaikhofficial" target="_blank" rel="noreferrer" aria-label="LinkedIn"><LinkedInIcon size={18} /></a>
+                    <a className="contact-social" href="https://www.instagram.com/hafizhydershaikh" target="_blank" rel="noreferrer" aria-label="Instagram"><InstagramIcon size={18} /></a>
+                    <a className="contact-social" href="https://www.facebook.com/profile.php?id=61577739728113" target="_blank" rel="noreferrer" aria-label="Facebook"><FacebookIcon size={18} /></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Reveal>
+
+          {/* Right: form */}
+          <Reveal delay={150}>
+            <div className="contact-form-card">
+              {sent ? (
+                <div className="contact-success">
+                  <div className="contact-success-icon"><CheckCircle2 size={32} /></div>
+                  <h3 style={{ fontSize: '1.4rem' }}>Message Sent!</h3>
+                  <p className="text-muted">
+                    Thanks, {form.name || 'there'}! Your message has been sent. I'll get back to you as soon as possible.
+                  </p>
+                  <button className="btn btn-outline btn-pill" onClick={() => { setSent(false); setForm({ name: '', email: '', service: serviceOptions[0], message: '' }); }} style={{ marginTop: '8px' }}>
+                    Send Another Message
+                  </button>
+                </div>
+              ) : (
+                <form className="contact-form" onSubmit={handleSubmit}>
+                  <div className="contact-field">
+                    <label htmlFor="name">Name</label>
+                    <input id="name" name="name" type="text" placeholder="Your name" value={form.name} onChange={handleChange} required />
+                  </div>
+
+                  <div className="contact-field">
+                    <label htmlFor="email">Email</label>
+                    <input id="email" name="email" type="email" placeholder="you@example.com" value={form.email} onChange={handleChange} required />
+                  </div>
+
+                  <div className="contact-field">
+                    <label htmlFor="service">Service Needed</label>
+                    <select id="service" name="service" value={form.service} onChange={handleChange}>
+                      {serviceOptions.map((s) => <option key={s} value={s}>{s}</option>)}
+                    </select>
+                  </div>
+
+                  <div className="contact-field">
+                    <label htmlFor="message">Project Details</label>
+                    <textarea
+                      id="message"
+                      name="message"
+                      placeholder="Tell me about your project, goals, and timeline..."
+                      value={form.message}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+
+                  {error && <p style={{ color: '#ff6b6b', fontSize: '0.9rem', textAlign: 'center' }}>{error}</p>}
+
+                  <button className="btn btn-primary-glow btn-pill contact-submit" type="submit" disabled={sending} style={{ opacity: sending ? 0.6 : 1, cursor: sending ? 'not-allowed' : 'pointer' }}>
+                    {sending ? 'Sending...' : "Let's Work Together"} <ArrowRight size={18} />
+                  </button>
+                </form>
+              )}
+            </div>
+          </Reveal>
+        </div>
       </div>
     </div>
   );
 };
+
 export default Contact;

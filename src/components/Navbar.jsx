@@ -1,26 +1,61 @@
+import { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import { Phone } from 'lucide-react';
+import { Download, Menu, X } from 'lucide-react';
 import './Navbar.css';
 
 const Navbar = () => {
+  const [open, setOpen] = useState(false);
+
+  const links = [
+    { to: '/', label: 'Home' },
+    { to: '/about', label: 'About' },
+    { to: '/skills', label: 'Skills' },
+    { to: '/portfolio', label: 'Portfolio' },
+    { to: '/contact', label: 'Contact' },
+  ];
+
   return (
     <nav className="navbar">
       <div className="container nav-container">
-        <Link to="/" className="nav-logo">
+        <Link to="/" className="nav-logo" onClick={() => setOpen(false)}>
           <span className="logo-icon">H</span>
           HYDER <span className="logo-accent">SHAIKH</span>
         </Link>
-        
+
         <ul className="nav-links">
-          <li><NavLink to="/" className={({isActive}) => isActive ? "active" : ""}>Home</NavLink></li>
-          <li><NavLink to="/about" className={({isActive}) => isActive ? "active" : ""}>About</NavLink></li>
-          <li><NavLink to="/services" className={({isActive}) => isActive ? "active" : ""}>Services</NavLink></li>
-          <li><NavLink to="/portfolio" className={({isActive}) => isActive ? "active" : ""}>Portfolio</NavLink></li>
-          <li><NavLink to="/contact" className={({isActive}) => isActive ? "active" : ""}>Contact</NavLink></li>
+          {links.map((l) => (
+            <li key={l.to}>
+              <NavLink to={l.to} className={({ isActive }) => (isActive ? 'active' : '')}>{l.label}</NavLink>
+            </li>
+          ))}
         </ul>
-        
-        <a href="/contact" className="btn btn-outline btn-call">
-          <span>Let's Contact</span>
+
+        <div className="nav-actions">
+          <a href="/cv/Hyder-Shaikh-CV.pdf" download className="btn btn-outline btn-cv">
+            <Download size={16} /> CV
+          </a>
+          <Link to="/contact" className="btn btn-outline btn-call">
+            <span>Let's Contact</span>
+          </Link>
+          <button className="nav-toggle" onClick={() => setOpen(!open)} aria-label="Toggle menu">
+            {open ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
+      </div>
+
+      <div className={`mobile-menu ${open ? 'mobile-menu-open' : ''}`}>
+        {links.map((l) => (
+          <NavLink
+            key={l.to}
+            to={l.to}
+            className={({ isActive }) => (isActive ? 'active' : '')}
+            onClick={() => setOpen(false)}
+          >
+            {l.label}
+          </NavLink>
+        ))}
+        <a href="/cv/Hyder-Shaikh-CV.pdf" download onClick={() => setOpen(false)}>
+          <Download size={16} /> Download CV
         </a>
       </div>
     </nav>
