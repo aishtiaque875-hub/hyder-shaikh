@@ -272,10 +272,7 @@ const Portfolio = () => {
           </Reveal>
 
           <Reveal>
-            <p className="pf-quote">
-              Don't just tell visitors you can design. <strong>Show them.</strong><br />
-              <span className="text-muted" style={{ fontSize: '0.95rem' }}>Human beings oddly believe their eyes.</span>
-            </p>
+
             <div className="pf-gallery">
               {designWork.map((d) => (
                 <div className="pf-gallery-tile" key={d.label}>
@@ -338,3 +335,5 @@ const Tools = ({ tools }) => (
 );
 
 export default Portfolio;
+
+
