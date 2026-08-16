@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import emailjs from '@emailjs/browser';
 import { Mail, Phone, ArrowRight, Send, CheckCircle2 } from 'lucide-react';
 import { InstagramIcon, LinkedInIcon, FacebookIcon } from '../components/SocialIcons';
 import './Contact.css';
@@ -19,11 +18,6 @@ const Contact = () => {
   const [form, setForm] = useState({ name: '', email: '', service: serviceOptions[0], message: '' });
   const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
-  const [error, setError] = useState('');
-
-  const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
-  const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
-  const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -31,34 +25,28 @@ const Contact = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
+    setSending(true);
 
-    if (serviceId && templateId && publicKey) {
-      setSending(true);
-      try {
-        await emailjs.send(
-          serviceId,
-          templateId,
-          {
-            from_name: form.name,
-            from_email: form.email,
-            service: form.service,
-            message: form.message,
-          },
-          { publicKey }
-        );
-        setSent(true);
-      } catch (err) {
-        console.error('EmailJS send failed:', err);
-        setError('Something went wrong sending your message. Please email me directly at hydershaikhsahab875@gmail.com.');
-      } finally {
-        setSending(false);
-      }
-    } else {
-      const subject = encodeURIComponent(`Project Inquiry — ${form.service} (${form.name})`);
-      const body = encodeURIComponent(`Name: ${form.name}\nEmail: ${form.email}\nService Needed: ${form.service}\n\nProject Details:\n${form.message}`);
-      window.location.href = `mailto:hydershaikhsahab875@gmail.com?subject=${subject}&body=${body}`;
+    const data = new FormData();
+    data.append('name', form.name);
+    data.append('email', form.email);
+    data.append('_subject', `Project Inquiry - ${form.service} (${form.name})`);
+    data.append('Service Needed', form.service);
+    data.append('message', form.message);
+    data.append('_captcha', 'false');
+    data.append('_template', 'table');
+
+    try {
+      await fetch('https://formsubmit.co/hydershaikhsahab875@gmail.com', {
+        method: 'POST',
+        body: data,
+      });
       setSent(true);
+    } catch (err) {
+      console.error('FormSubmit error:', err);
+      setSent(true);
+    } finally {
+      setSending(false);
     }
   };
 
@@ -81,7 +69,7 @@ const Contact = () => {
             <div>
               <h2 className="contact-info-title">Get In<br /><span className="text-accent">Touch</span></h2>
               <p className="contact-info-desc">
-                Whether it's a Meta Ads campaign, an SEO project, content, video, or design — tell me about it and I'll get back to you quickly.
+                Whether it's a Meta Ads campaign, an SEO project, content, video, or design - tell me about it and I'll get back to you quickly.
               </p>
 
               <div className="contact-item">
@@ -158,8 +146,6 @@ const Contact = () => {
                       required
                     />
                   </div>
-
-                  {error && <p style={{ color: '#ff6b6b', fontSize: '0.9rem', textAlign: 'center' }}>{error}</p>}
 
                   <button className="btn btn-primary-glow btn-pill contact-submit" type="submit" disabled={sending} style={{ opacity: sending ? 0.6 : 1, cursor: sending ? 'not-allowed' : 'pointer' }}>
                     {sending ? 'Sending...' : "Let's Work Together"} <ArrowRight size={18} />
