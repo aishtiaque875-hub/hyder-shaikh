@@ -31,19 +31,6 @@ const Footer = () => {
 
   return (
     <footer className="footer">
-      {/* Top CTA Strip */}
-      <div className="footer-cta">
-        <div className="container footer-cta-inner">
-          <div>
-            <p className="footer-cta-label">Ready to grow your brand?</p>
-            <h3 className="footer-cta-heading">Let's build something that <span className="text-accent">converts.</span></h3>
-          </div>
-          <Link to="/contact" className="btn btn-primary footer-cta-btn">
-            Start a Project <ArrowUpRight size={18} />
-          </Link>
-        </div>
-      </div>
-
       {/* Main Footer Grid */}
       <div className="footer-main">
         <div className="container footer-grid">
@@ -133,6 +120,13 @@ const Footer = () => {
           <p className="footer-made">
             Built with passion for digital growth.
           </p>
+          <button
+            className="footer-back-top"
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            aria-label="Back to top"
+          >
+            ↑ Back to Top
+          </button>
         </div>
       </div>
     </footer>
@@ -140,3 +134,5 @@ const Footer = () => {
 };
 
 export default Footer;
+
+
