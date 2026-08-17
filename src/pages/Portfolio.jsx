@@ -254,7 +254,7 @@ const Portfolio = () => {
             <div className="pf-header">
               <div className="pf-header-icon"><Palette size={26} /></div>
               <div>
-                <h2 className="pf-title">Social Media Post Design</h2>
+                <h2 className="pf-title">Social Media Design</h2>
                 <p className="pf-subtitle">Brand-aligned creatives for every platform.</p>
               </div>
             </div>
@@ -335,5 +335,7 @@ const Tools = ({ tools }) => (
 );
 
 export default Portfolio;
+
+
 
 
