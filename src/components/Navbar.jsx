@@ -18,7 +18,7 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="container nav-container">
         <Link to="/" className="nav-logo" onClick={() => setOpen(false)}>
-          <span className="logo-icon">H</span>
+          <img src="/logo.png" alt="Hyder Shaikh Logo" className="logo-img" />
           HYDER <span className="logo-accent">SHAIKH</span>
         </Link>
 
