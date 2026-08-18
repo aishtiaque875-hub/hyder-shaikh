@@ -36,7 +36,7 @@ const Footer = () => {
 
           {/* Brand Column */}
           <div className="footer-brand">
-            <Link to="/" className="footer-logo">
+            <Link to="/" className="footer-logo" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
               <img src="/logo.png" alt="Hyder Shaikh Logo" className="footer-logo-img" />
               Hyder <span className="text-accent">Shaikh</span>
             </Link>
