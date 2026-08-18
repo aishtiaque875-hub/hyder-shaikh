@@ -17,7 +17,7 @@ const Navbar = () => {
   return (
     <nav className="navbar">
       <div className="container nav-container">
-        <Link to="/" className="nav-logo" onClick={() => setOpen(false)}>
+        <Link to="/" className="nav-logo" onClick={() => { setOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
           <img src="/logo.png" alt="Hyder Shaikh Logo" className="logo-img" />
           Hyder <span className="logo-accent">Shaikh</span>
         </Link>
