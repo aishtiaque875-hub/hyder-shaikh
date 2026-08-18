@@ -4,6 +4,7 @@
 .footer-main {
   padding: 60px 0 40px;
   background: var(--bg-main);
+  border-top: 1px solid var(--border-subtle);
 }
 
 .footer-grid {
@@ -31,17 +32,12 @@
   text-decoration: none;
 }
 
-.footer-logo-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 34px;
-  height: 34px;
-  background: var(--accent);
-  color: #000;
+.footer-logo-img {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
   border-radius: 8px;
-  font-weight: 800;
-  font-size: 1rem;
+  display: block;
 }
 
 .footer-tagline {
@@ -94,6 +90,7 @@
   color: var(--text-main);
   padding-bottom: 12px;
   border-bottom: 1px solid var(--border-subtle);
+  margin: 0;
 }
 
 .footer-links {
@@ -101,6 +98,8 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+  padding: 0;
+  margin: 0;
 }
 
 .footer-link {
@@ -137,6 +136,8 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
+  padding: 0;
+  margin: 0;
 }
 
 .footer-contact-item {
@@ -191,15 +192,6 @@ a.footer-contact-item:hover {
 }
 
 @media (max-width: 600px) {
-  .footer-cta-inner {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .footer-cta-heading {
-    font-size: 1.3rem;
-  }
-
   .footer-grid {
     grid-template-columns: 1fr;
     gap: 32px;
@@ -219,8 +211,8 @@ a.footer-contact-item:hover {
 /* Back to Top */
 .footer-back-top {
   background: transparent;
-  border: 1px solid var(--border-subtle);
-  color: var(--text-muted);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff; /* White text by default */
   font-size: 0.82rem;
   font-weight: 600;
   padding: 8px 16px;
@@ -233,7 +225,7 @@ a.footer-contact-item:hover {
 
 .footer-back-top:hover {
   border-color: var(--accent);
-  color: var(--accent);
+  color: var(--accent); /* Cyan text on hover */
   transform: translateY(-2px);
   box-shadow: 0 4px 14px rgba(0, 240, 255, 0.15);
 }
